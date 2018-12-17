@@ -14,13 +14,13 @@
 ### API
 
 ```php
-    JackMD\UpdateNotifier\UpdateNotifier::checkUpdate($plugin, $pluginName, $pluginVersion);
+JackMD\UpdateNotifier\UpdateNotifier::checkUpdate($plugin, $pluginName, $pluginVersion);
 ```
-<br />
-- `$plugin` is the plugin whose update you want to check.
-- `$pluginName` is the name of the plugin whose update you want to check.
-- `$pluginVersion` is the current version of the plugin whose update you want to check.
-<br />
+
+- **$plugin** is the plugin whose update you want to check.
+- **$pluginName** is the name of the plugin whose update you want to check.
+- **$pluginVersion** is the current version of the plugin whose update you want to check.
+
 <br />
 - For information regarding how to use a virion in a plugin please refer [here](https://poggit.github.io/support/virion.html)
 
