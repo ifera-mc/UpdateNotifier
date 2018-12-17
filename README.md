@@ -22,7 +22,8 @@ JackMD\UpdateNotifier\UpdateNotifier::checkUpdate($plugin, $pluginName, $pluginV
 - **$pluginVersion** is the current version of the plugin whose update you want to check.
 
 <br />
-- For information regarding how to use a virion in a plugin please refer [here](https://poggit.github.io/support/virion.html)
+
+- For information regarding how to use a virion in a plugin please refer [here](https://poggit.github.io/support/virion.html).
 
 ### Disclaimer
 
