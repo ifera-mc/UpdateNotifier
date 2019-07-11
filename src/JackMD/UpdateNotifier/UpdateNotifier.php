@@ -38,24 +38,15 @@ use pocketmine\plugin\Plugin;
 class UpdateNotifier{
 
 	/**
-	 * Submits an async task which then checks if a specific version for the plugin is available.
-	 * If an update is available then it would print a message on the console.
-	 *
-	 * @param Plugin $plugin
-	 * @param string $pluginVersion
-	 */
-	public static function checkSpecificUpdate(Plugin $plugin, string $pluginVersion) : void{
-		$plugin->getLogger()->info("Checking for updates...");
-		$plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($plugin->getName(), $pluginVersion));
-	}
-
-	/**
 	 * Submits an async task which then checks if a new version for the plugin is available.
 	 * If an update is available then it would print a message on the console.
 	 *
-	 * @param Plugin $plugin
+	 * @param Plugin      $plugin
+	 * @param string|null $pluginVersion If it's null (by default), it checks the latest version else for a specific version.
 	 */
-	public static function checkUpdate(Plugin $plugin) : void{
-		self::checkSpecificUpdate($plugin, $plugin->getDescription()->getVersion());
+	public static function checkUpdate(Plugin $plugin, ?string $pluginVersion = null) : void{
+		$plugin->getLogger()->info("Checking for updates...");
+		$plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($plugin->getName(), $pluginVersion ?? $plugin->getDescription()->getVersion()));
 	}
+
 }
