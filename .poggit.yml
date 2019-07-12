@@ -1,7 +1,6 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/JackMD/UpdateNotifier
 branches:
 - master
-- API-4.0.0
 projects:
   UpdateNotifier:
     path: ""
