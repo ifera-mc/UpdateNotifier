@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  *  _   _           _       _       _   _       _   _  __ _
@@ -36,17 +36,17 @@ use JackMD\UpdateNotifier\task\UpdateNotifyTask;
 use pocketmine\plugin\Plugin;
 
 class UpdateNotifier{
-	
+
 	/**
 	 * Submits an async task which then checks if a new version for the plugin is available.
 	 * If an update is available then it would print a message on the console.
 	 *
-	 * @param Plugin $plugin
-	 * @param string $pluginName
-	 * @param string $pluginVersion
+	 * @param Plugin      $plugin
+	 * @param string|null $pluginVersion If it's null (by default), it checks the latest version else for a specific version.
 	 */
-	public static function checkUpdate(Plugin $plugin, string $pluginName, string $pluginVersion){
+	public static function checkUpdate(Plugin $plugin, ?string $pluginVersion = null) : void{
 		$plugin->getLogger()->info("Checking for updates...");
-		$plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($pluginName, $pluginVersion));
+		$plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($plugin->getName(), $pluginVersion ?? $plugin->getDescription()->getVersion()));
 	}
+
 }

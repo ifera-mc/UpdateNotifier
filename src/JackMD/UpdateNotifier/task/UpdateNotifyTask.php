@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  *  _   _           _       _       _   _       _   _  __ _
@@ -37,15 +37,15 @@ use pocketmine\Server;
 use pocketmine\utils\Internet;
 
 class UpdateNotifyTask extends AsyncTask{
-	
+
 	/** @var string */
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.json?name=";
-	
+
 	/** @var string */
 	private $pluginName;
 	/** @var string */
 	private $pluginVersion;
-	
+
 	/**
 	 * UpdateNotifyTask constructor.
 	 *
@@ -56,8 +56,8 @@ class UpdateNotifyTask extends AsyncTask{
 		$this->pluginName = $pluginName;
 		$this->pluginVersion = $pluginVersion;
 	}
-	
-	public function onRun(): void{
+
+	public function onRun() : void{
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
@@ -73,16 +73,14 @@ class UpdateNotifyTask extends AsyncTask{
 				$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
 			}
 		}
-		
+
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
-	
-	/**
-	 * @param Server $server
-	 */
-	public function onCompletion(Server $server): void{
+
+
+	public function onCompletion() : void{
 		$pluginName = $this->pluginName;
-		$plugin = $server->getPluginManager()->getPlugin($pluginName);
+		$plugin = Server::getInstance()->getPluginManager()->getPlugin($pluginName);
 		if($plugin === null){
 			return;
 		}
@@ -92,6 +90,7 @@ class UpdateNotifyTask extends AsyncTask{
 		}
 		if($highestVersion === $this->pluginVersion){
 			$plugin->getLogger()->info("No new updates were found. You are using the latest version.");
+
 			return;
 		}
 		$artifactUrl = $artifactUrl . "/" . $pluginName . "_" . $highestVersion . ".phar";
