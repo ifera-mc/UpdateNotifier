@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  *  _   _           _       _       _   _       _   _  __ _
@@ -35,29 +36,26 @@ namespace JackMD\UpdateNotifier\task;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
+use function json_decode;
+use function version_compare;
+use function vsprintf;
 
 class UpdateNotifyTask extends AsyncTask{
-	
+
 	/** @var string */
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.json?name=";
-	
+
 	/** @var string */
 	private $pluginName;
 	/** @var string */
 	private $pluginVersion;
-	
-	/**
-	 * UpdateNotifyTask constructor.
-	 *
-	 * @param string $pluginName
-	 * @param string $pluginVersion
-	 */
+
 	public function __construct(string $pluginName, string $pluginVersion){
 		$this->pluginName = $pluginName;
 		$this->pluginVersion = $pluginVersion;
 	}
-	
-	public function onRun(): void{
+
+	public function onRun() : void{
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
@@ -73,28 +71,24 @@ class UpdateNotifyTask extends AsyncTask{
 				$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
 			}
 		}
-		
+
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
-	
-	/**
-	 * @param Server $server
-	 */
-	public function onCompletion(Server $server): void{
-		$pluginName = $this->pluginName;
-		$plugin = $server->getPluginManager()->getPlugin($pluginName);
+
+	public function onCompletion(Server $server) : void{
+		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if($plugin === null){
 			return;
 		}
+
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if($err !== null){
 			$plugin->getLogger()->error("Update notify error: " . $err);
 		}
-		if($highestVersion === $this->pluginVersion){
-			$plugin->getLogger()->info("No new updates were found. You are using the latest version.");
-			return;
+
+		if($highestVersion !== $this->pluginVersion){
+			$artifactUrl = $artifactUrl . "/" . $this->pluginName . "_" . $highestVersion . ".phar";
+			$plugin->getLogger()->notice(vsprintf("Version %s has been released for API %s. Download the new release at %s", [$highestVersion, $api, $artifactUrl]));
 		}
-		$artifactUrl = $artifactUrl . "/" . $pluginName . "_" . $highestVersion . ".phar";
-		$plugin->getLogger()->notice(vsprintf("Version %s has been released for API %s. Download the new release at %s", [$highestVersion, $api, $artifactUrl]));
 	}
 }
