@@ -34,7 +34,6 @@ declare(strict_types=1);
 namespace JackMD\UpdateNotifier;
 
 use JackMD\UpdateNotifier\task\UpdateNotifyTask;
-use pocketmine\plugin\Plugin;
 use pocketmine\Server;
 
 class UpdateNotifier{
