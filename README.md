@@ -14,10 +14,8 @@
 ### API
 
 ```php
-JackMD\UpdateNotifier\UpdateNotifier::checkUpdate($plugin, $pluginName, $pluginVersion);
+JackMD\UpdateNotifier\UpdateNotifier::checkUpdate($pluginName, $pluginVersion);
 ```
-
-- **$plugin** is the plugin whose update you want to check.
 - **$pluginName** is the name of the plugin whose update you want to check.
 - **$pluginVersion** is the current version of the plugin whose update you want to check.
 
