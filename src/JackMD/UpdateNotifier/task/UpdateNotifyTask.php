@@ -36,7 +36,7 @@ namespace JackMD\UpdateNotifier\task;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use function is_null;
+use function is_array;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
@@ -63,9 +63,8 @@ class UpdateNotifyTask extends AsyncTask{
 		$api = "";
 		if($json !== false){
 			$releases = json_decode($json, true);
-			if(is_null($releases)){
-				$err = is_null($err) ? "Unable to resolve host: " . self::POGGIT_RELEASES_URL . $this->pluginName : $err;
-				$this->setResult([null, null, null, $err]);
+			if($releases === null || !is_array($releases) || !$releases){
+				$this->setResult([null, null, null, $err ?? "Unable to resolve host: " . self::POGGIT_RELEASES_URL . $this->pluginName]);
 				return;
 			}
 			foreach($releases as $release){
