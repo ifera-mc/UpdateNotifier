@@ -3,4 +3,4 @@ version: 2.1.0
 api: [3.0.0]
 antigen: JackMD\UpdateNotifier
 authors: [JackMD, Sandertv]
-php: [7.2]
+php: [7.2, 8.0]
