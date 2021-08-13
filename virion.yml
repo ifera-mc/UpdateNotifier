@@ -1,6 +1,5 @@
 name: UpdateNotifier
-version: 1.1.0
-api: [4.0.0]
+version: 2.2.0
+api: 4.0.0
 antigen: JackMD\UpdateNotifier
 authors: [JackMD, Sandertv]
-php: [7.2]
