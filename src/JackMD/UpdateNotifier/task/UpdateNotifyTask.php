@@ -58,6 +58,7 @@ class UpdateNotifyTask extends AsyncTask{
 
 	public function onRun() : void{
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
+		$json = $json->getBody();
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
 		$api = "";
@@ -80,7 +81,7 @@ class UpdateNotifyTask extends AsyncTask{
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
 
-	public function onCompletion(Server $server) : void{
+	public function onCompletion( ) : void{
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 
 		if($plugin === null){
