@@ -2,7 +2,7 @@
 
 | Discord | Poggit | License |
 |:--:|:--:|:--:|
-|[![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/urQt6ETgYu)|[![Poggit-CI](https://poggit.pmmp.io/ci.shield/ifera-mc/UpdateNotifier/UpdateNotifier)](https://poggit.pmmp.io/ci/ifera-mc/UpdateNotifier/UpdateNotifier)|[![GitHub license](https://img.shields.io/github/license/JackMD/UpdateNotifier.svg)](https://github.com/JackMD/UpdateNotifier/blob/master/LICENSE)|
+|[![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/urQt6ETgYu)|[![Poggit-CI](https://poggit.pmmp.io/ci.shield/ifera-mc/UpdateNotifier/UpdateNotifier)](https://poggit.pmmp.io/ci/ifera-mc/UpdateNotifier/UpdateNotifier)|[![GitHub license](https://img.shields.io/github/license/Ifera/UpdateNotifier.svg)](https://github.com/Ifera/UpdateNotifier/blob/master/LICENSE)|
 
 ### A handy virion for PocketMine-MP plugin developers that checks if a new release for a plugin is available on Poggit. If so then it notifies the user about the new release.
 
@@ -35,7 +35,7 @@ projects:
   PLUGIN_NAME:
     libs:
       - src: ifera-mc/UpdateNotifier/UpdateNotifier
-        version: ^2.1.0
+        version: ^3.0.0
 ...
 ```
 
