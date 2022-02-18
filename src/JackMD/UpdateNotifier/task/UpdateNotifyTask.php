@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  *  _   _           _       _       _   _       _   _  __ _
@@ -36,65 +36,53 @@ namespace JackMD\UpdateNotifier\task;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use function is_array;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
 
-class UpdateNotifyTask extends AsyncTask{
+class UpdateNotifyTask extends AsyncTask {
 
 	/** @var string */
-	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.json?name=";
+	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
-	/** @var string */
-	private $pluginName;
-	/** @var string */
-	private $pluginVersion;
+	public function __construct(private string $pluginName, private string $pluginVersion) { }
 
-	public function __construct(string $pluginName, string $pluginVersion){
-		$this->pluginName = $pluginName;
-		$this->pluginVersion = $pluginVersion;
-	}
-
-	public function onRun() : void{
+	public function onRun(): void {
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
 		$api = "";
-		if($json !== false){
-			$releases = json_decode($json, true);
-			if($releases === null || !is_array($releases) || !$releases){
-				$this->setResult([null, null, null, $err ?? "Unable to resolve host: " . self::POGGIT_RELEASES_URL . $this->pluginName]);
-				return;
-			}
-			foreach($releases as $release){
-				if(version_compare($highestVersion, $release["version"], ">=")){
-					continue;
+		if ($json !== null) {
+			$releases = json_decode($json->getBody(), true);
+			if ($releases !== null) { /* Poggit is Down! */
+				foreach ($releases as $release) {
+					if (version_compare($highestVersion, $release["version"], ">=")) {
+						continue;
+					}
+					$highestVersion = $release["version"];
+					$artifactUrl = $release["artifact_url"];
+					$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
 				}
-				$highestVersion = $release["version"];
-				$artifactUrl = $release["artifact_url"];
-				$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
 			}
 		}
 
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
 
-	public function onCompletion(Server $server) : void{
+	public function onCompletion(): void {
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
-
-		if($plugin === null){
+		if ($plugin === null) {
 			return;
 		}
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 
-		if($err !== null){
-			$plugin->getLogger()->error("Update notify error: " . $err);
+		if ($err !== null) {
+			$plugin->getLogger()->error("Update notify error: $err");
 			return;
 		}
 
-		if($highestVersion !== $this->pluginVersion){
+		if ($highestVersion !== $this->pluginVersion) {
 			$artifactUrl = $artifactUrl . "/" . $this->pluginName . "_" . $highestVersion . ".phar";
 			$plugin->getLogger()->notice(vsprintf("Version %s has been released for API %s. Download the new release at %s", [$highestVersion, $api, $artifactUrl]));
 		}

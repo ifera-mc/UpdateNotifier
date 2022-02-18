@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  *  _   _           _       _       _   _       _   _  __ _
@@ -36,7 +36,7 @@ namespace JackMD\UpdateNotifier;
 use JackMD\UpdateNotifier\task\UpdateNotifyTask;
 use pocketmine\Server;
 
-class UpdateNotifier{
+class UpdateNotifier {
 
 	/**
 	 * Submits an async task which then checks if a new version for the plugin is available.
@@ -45,7 +45,7 @@ class UpdateNotifier{
 	 * @param string $pluginName
 	 * @param string $pluginVersion
 	 */
-	public static function checkUpdate(string $pluginName, string $pluginVersion){
+	public static function checkUpdate(string $pluginName, string $pluginVersion): void {
 		Server::getInstance()->getAsyncPool()->submitTask(new UpdateNotifyTask($pluginName, $pluginVersion));
 	}
 }
