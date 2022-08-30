@@ -84,7 +84,7 @@ class UpdateNotifyTask extends AsyncTask {
 
 		if ($highestVersion !== $this->pluginVersion) {
 			$artifactUrl = $artifactUrl . "/" . $this->pluginName . "_" . $highestVersion . ".phar";
-			if(trim($this->updateMessage) === ""){
+			if(trim($this->updateMessage) === "") {
 				$updateMessage = "Version %s has been released for API %s. Download the new release at %s";
 			}
 			$plugin->getLogger()->notice(vsprintf($updateMessage, [$highestVersion, $api, $artifactUrl]));
