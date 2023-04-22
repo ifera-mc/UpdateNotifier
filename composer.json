@@ -1,0 +1,32 @@
+{
+    "name": "ifera-mc/update-notifier",
+    "description": "A handy virion for PocketMine-MP plugin developers that checks if a new release for a plugin is available on Poggit. If so then it notifies the user about the new release.",
+    "type": "library",
+    "license": "LGPL-3.0",
+    "require": {
+        "pocketmine/pocketmine-mp": "^4.0.0"
+    },
+    "autoload": {
+        "classmap": ["src"]
+    },
+    "authors": [
+        {
+            "name": "JackMD",
+            "email": "jackmtaylor.jmt@gmail.com"
+        },
+        {
+            "name": "Ifera",
+            "email": "contact@tayyab.dev"
+        },
+        {
+            "name": "Sandertv",
+            "email": "st.ten.veldhuis@gmail.com"
+        }
+    ],
+    "extra": {
+        "virion": {
+            "spec": "3.0",
+            "namespace-root": "JackMD\\UpdateNotifier"
+        }
+    }
+}
