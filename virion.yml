@@ -1,5 +1,5 @@
 name: UpdateNotifier
-version: 3.0.0
+version: 3.1.0
 api: [4.0.0, 5.0.0]
 antigen: JackMD\UpdateNotifier
 authors: [Ifera, JackMD, Sandertv]
