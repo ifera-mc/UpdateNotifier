@@ -33,6 +33,7 @@ declare(strict_types = 1);
 
 namespace JackMD\UpdateNotifier\task;
 
+use pocketmine\plugin\ApiVersion;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
@@ -49,6 +50,7 @@ class UpdateNotifyTask extends AsyncTask {
 
 	public function onRun(): void {
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
+		$currentApiVersion = Server::getInstance()->getApiVersion();
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
 		$api = "";
@@ -56,7 +58,10 @@ class UpdateNotifyTask extends AsyncTask {
 			$releases = json_decode($json->getBody(), true);
 			if ($releases !== null) { /* Poggit is Down! */
 				foreach ($releases as $release) {
-					if (version_compare($highestVersion, $release["version"], ">=")) {
+					if (
+						version_compare($highestVersion, $release["version"], ">=")
+						|| !ApiVersion::isCompatible($currentApiVersion, $release["api"][0])
+					) {
 						continue;
 					}
 					$highestVersion = $release["version"];
