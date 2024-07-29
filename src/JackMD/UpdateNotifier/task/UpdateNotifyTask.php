@@ -46,11 +46,17 @@ class UpdateNotifyTask extends AsyncTask {
 	/** @var string */
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
-	public function __construct(private string $pluginName, private string $pluginVersion) { }
+	private string $currentApiVersion;
+
+	public function __construct(
+		private string $pluginName,
+		private string $pluginVersion
+	) {
+		$this->currentApiVersion = Server::getInstance()->getApiVersion();
+	}
 
 	public function onRun(): void {
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
-		$currentApiVersion = Server::getInstance()->getApiVersion();
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
 		$api = "";
@@ -60,7 +66,7 @@ class UpdateNotifyTask extends AsyncTask {
 				foreach ($releases as $release) {
 					if (
 						version_compare($highestVersion, $release["version"], ">=")
-						|| !ApiVersion::isCompatible($currentApiVersion, $release["api"][0])
+						|| !ApiVersion::isCompatible($this->currentApiVersion, $release["api"][0])
 					) {
 						continue;
 					}
